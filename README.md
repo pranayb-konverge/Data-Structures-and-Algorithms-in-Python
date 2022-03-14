@@ -3,7 +3,7 @@
 ## Youtube video
 <a href="https://www.youtube.com/watch?feature=player_embedded&v=pkYVOmU3MgA
 " target="_blank"><img src="http://img.youtube.com/vi/pkYVOmU3MgA/0.jpg" 
-alt="Python for everyone - full course" width="240" height="180" border="10" /></a>
+alt="Data Structures in Python," width="240" height="180" border="10" /></a>
 
 ## The Method to solved a problem
 Upon reading the problem, you may get some ideas on how to solve it and your first instinct might be to start writing code. This is not the optimal strategy and you may end up spending a longer time trying to solve the problem due to coding errors, or may not be able to solve it at all.
