@@ -267,7 +267,7 @@ test_new.append({
         'nums': [5, 6, 9, 0, 2, 3, 4],
         'target': 2
     },
-    'output': 5
+    'output': 4
 })
 
 test_new.append({
@@ -276,7 +276,7 @@ test_new.append({
         'nums': [4, 5, 6, 9, 0, 2, 3],
         'target': 2
     },
-    'output': 6
+    'output': 5
 })
 
 test_new.append({
@@ -285,7 +285,25 @@ test_new.append({
         'nums': [0, 2, 3, 4, 5, 6, 9],
         'target': 2
     },
-    'output': 2
+    'output': 1
+})
+
+test_new.append({
+    'message':'12: search in rotated list when list has one element',
+    'input': {
+        'nums': [9],
+        'target': 9
+    },
+    'output': 0
+})
+
+test_new.append({
+    'message':'13: search in empty list',
+    'input': {
+        'nums': [],
+        'target': 9
+    },
+    'output': -1
 })
 
 def locate_target(list_nums, target):
@@ -298,7 +316,7 @@ def locate_target(list_nums, target):
         # print("lo:", lo, ", hi:", hi, ", mid:", mid, ", mid_number:", mid_number)
         
         if mid_number == target:
-            return mid + 1
+            return mid
         # 1. if the mid_number is less than target [5, 6, 9, 0, 2, 3, 4], 
         # it means that the number is in right. 
         elif mid_number < target:
@@ -314,7 +332,7 @@ def locate_target(list_nums, target):
             else:
                 hi = mid - 1  
     
-    return 0
+    return -1
 
 
 # start_time_binary = time.time()
