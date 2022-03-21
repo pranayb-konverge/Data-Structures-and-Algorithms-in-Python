@@ -288,4 +288,4 @@ print("6: empty list: ", count_rotations(tests[6]['input']['nums']))
 # 7: test list with one element
 print("7: list with one element: ",count_rotations(tests[7]['input']['nums']))
 
-print("\nTime taken by Binary search: ", (time.time() - start_time_binary) / 60, "seconds")
+print("\nTime taken by Binary search using binary_search method: ", (time.time() - start_time_binary) / 60, "seconds")
