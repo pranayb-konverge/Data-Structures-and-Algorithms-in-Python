@@ -18,6 +18,7 @@ order e.g. [1, 3, 5, 7].
 tests = []
 # 0: A list of size 10 rotated 3 times.
 tests.append({
+    'message':'0: A list of size 10 rotated 3 times',
     'input': {
         'nums': [19, 25, 29, 3, 5, 6, 7, 9, 11, 14]
     },
@@ -26,6 +27,7 @@ tests.append({
 
 # 1: A list of size 8 rotated 5 times.
 tests.append({
+    'message':'1: A list of size 8 rotated 5 times',
     'input': {
         'nums': [9, 11, 14, 19, 25, 3, 5, 6, 7]
     },
@@ -34,6 +36,7 @@ tests.append({
 
 # 2: A list that wasn't rotated at all.
 tests.append({
+    'message':"2: A list that wasn't rotated at all",
     'input': {
         'nums': [3, 5, 6, 7, 9, 11, 14, 19, 25, 29]
     },
@@ -47,6 +50,7 @@ here?) An empty list. A list containing just one element.
 """
 # 3: A list that was rotated just once.
 tests.append({
+    'message':'3: A list that was rotated just once',
     'input': {
         'nums': [4, 2, 3.5]
     },
@@ -55,6 +59,7 @@ tests.append({
 
 # 4: A list that was rotated n-1 times, where n is the size of the list.
 tests.append({
+    'message':'4: A list that was rotated n-1 times, where n is the size of the list',
     'input': {
         'nums': [3, 4, 2]
     },
@@ -63,6 +68,7 @@ tests.append({
 
 # 5: A list that was rotated n times, where n is the size of the list
 tests.append({
+    'message':'5: A list that was rotated n times, where n is the size of the list',
     'input': {
         'nums': [2, 3, 4]
     },
@@ -71,6 +77,7 @@ tests.append({
 
 # 6: An empty list
 tests.append({
+    'message':'6: An empty list',
     'input': {
         'nums': []
     },
@@ -79,17 +86,11 @@ tests.append({
 
 # 7: A list containing just one element.
 tests.append({
+    'message':'7: A list containing just one element',
     'input': {
         'nums': [1]
     },
     'output': 0
-})
-
-tests.append({
-    'input': {
-        'nums': [5, 6, 6, 9, 9, 9, 0, 0, 2, 3, 3, 3, 3, 4, 4]
-    },
-    'output': 6
 })
 
 """
@@ -128,32 +129,11 @@ def get_times_list_rotated(list_num):
     return 0
 
 start_time_liner = time.time()
-
-# 0: A list of size 10 rotated 3 times
-result = get_times_list_rotated(tests[0]['input']['nums'])
-print("0: A list of size 10 rotated 3 times: ",result)
-print(result == tests[0]['output'])
-
-# 1: A list of size 8 rotated 5 times
-print("1: A list of size 8 rotated 5 times: ",get_times_list_rotated(tests[1]['input']['nums']))
-
-# 2: A list that wasn't rotated at all
-print("2: A list that wasn't rotated at all: ",get_times_list_rotated(tests[2]['input']['nums']))
- 
-# 3: A list that was rotated just once.
-print("3: A list that was rotated just once: ",get_times_list_rotated(tests[3]['input']['nums']))
-
-# 4: A list that was rotated n-1 times, where n is the size of the list.
-print("4: A list that was rotated n-1 times, where n is the size of the list: ",get_times_list_rotated(tests[4]['input']['nums']))
-
-# 5: A list that was rotated n times, where n is the size of the list
-print("5: A list that was rotated n times, where n is the size of the list: ",get_times_list_rotated(tests[5]['input']['nums']))
-
-# 6: test empty list
-print("6: empty list: ", get_times_list_rotated(tests[6]['input']['nums']))
-
-# 7: test list with one element
-print("7: list with one element: ",get_times_list_rotated(tests[7]['input']['nums']))
+for i in range(0, len(tests)):
+    result = get_times_list_rotated(tests[i]['input']['nums'])
+    message = tests[i]['message']
+    output = tests[i]['output']
+    print(f"{message}:{result}, Does the result match the output? {result == output}")
 
 print("\nTime taken by linear search: ", (time.time() - start_time_liner) / 60, "seconds")
 
@@ -184,50 +164,34 @@ def get_times_list_rotated_binary_search(list_num):
 
 start_time_binary = time.time()
 
-# 0: A list of size 10 rotated 3 times
-print("0: A list of size 10 rotated 3 times: ",get_times_list_rotated_binary_search(tests[0]['input']['nums']))
-
-# 1: A list of size 8 rotated 5 times
-print("1: A list of size 8 rotated 5 times: ",get_times_list_rotated_binary_search(tests[1]['input']['nums']))
-
-# 2: A list that wasn't rotated at all
-print("2: A list that wasn't rotated at all: ",get_times_list_rotated_binary_search(tests[2]['input']['nums']))
- 
-# 3: A list that was rotated just once.
-print("3: A list that was rotated just once: ",get_times_list_rotated_binary_search(tests[3]['input']['nums']))
-
-# 4: A list that was rotated n-1 times, where n is the size of the list.
-print("4: A list that was rotated n-1 times, where n is the size of the list: ",get_times_list_rotated_binary_search(tests[4]['input']['nums']))
-
-# 5: A list that was rotated n times, where n is the size of the list
-print("5: A list that was rotated n times, where n is the size of the list: ",get_times_list_rotated_binary_search(tests[5]['input']['nums']))
-
-# 6: test empty list
-print("6: empty list: ", get_times_list_rotated_binary_search(tests[6]['input']['nums']))
-
-# 7: test list with one element
-print("7: list with one element: ",get_times_list_rotated_binary_search(tests[7]['input']['nums']))
+for i in range(0, len(tests)):
+    result = get_times_list_rotated_binary_search(tests[i]['input']['nums'])
+    message = tests[i]['message']
+    output = tests[i]['output']
+    print(f"{message}:{result}, Does the result match the output? {result == output}")
 
 print("\nTime taken by Binary search: ", (time.time() - start_time_binary) / 60, "seconds")
 
+print("\n----Bonus 1 & 2: Using the Generic Binary Search Algorithm, Handling repeating numbers----\n")
 
-"""
-_**Q (Optional): Implement the `count_rotations` function using the generic `binary_search` function.**_
-
-Hint: You'll need to define the condition which returns `"found"`, `"left"` or `"right"` by performing the appropriate check on the middle position in the range.
-"""
-
-print("\n-------------------Using the Generic Binary Search Algorithm-------------------\n")
+# 8: Handling repeted rotating numbers
+tests.append({
+    'message':'8: Handling repeted rotating numbers',
+    'input': {
+        'nums': [5, 6, 6, 9, 9, 9, 0, 0, 2, 3, 3, 3, 3, 4, 4]
+    },
+    'output': 6
+})
 
 def binary_search(lo, hi, condition):
     """
         1. If the low is less than or equal to the high, get the mid position 
         and its number in list.
-        2. Check if the mid_number is the query number, if mid_number equals to 
-        query check if the mid is greater to 0 and the mid-1 position number 
-        is equal to query. In this condition for true retrun 'left' to check left
-        of found as we got the fitst occurance of the query.
-        3. Else if mid_number < query, retrun 'right' to check in the 2nd part of list.
+        2. Check if the mid_number is the target number, if mid_number equals to 
+        target check if the mid is greater to 0 and the mid-1 position number 
+        is equal to target. In this condition for true retrun 'left' to check left
+        of found as we got the fitst occurance of the target.
+        3. Else if mid_number < target, retrun 'right' to check in the 2nd part of list.
         4. Else, return 'left' to check in the first part of list.
 
     """
@@ -248,6 +212,9 @@ def count_rotations(list_num):
     def condition(mid):
         mid_number = list_num[mid]
         # print("count_rotations: ","mid:", mid, ", mid_number:", mid_number)
+        
+        # it dosen't matter is the numbers are repeating or not...
+        # if the current numbe is smaller than the privious  number we found the answer
         if mid > 0 and mid_number < list_num[mid - 1]:
             return 'found'
         # Success criteria: mid_number is smaller than the last element, 
@@ -264,28 +231,98 @@ def count_rotations(list_num):
 
 start_time_binary = time.time()
 
-# 0: A list of size 10 rotated 3 times
-print("0: A list of size 10 rotated 3 times: ",count_rotations(tests[0]['input']['nums']))
+for i in range(0, len(tests)):
+    result = count_rotations(tests[i]['input']['nums'])
+    message = tests[i]['message']
+    output = tests[i]['output']
+    print(f"{message}:{result}, Does the result match the output? {result == output}")
 
-# 1: A list of size 8 rotated 5 times
-print("1: A list of size 8 rotated 5 times: ",count_rotations(tests[1]['input']['nums']))
+print("\nTime taken by Binary search for repeted rotating numbers : ", (time.time() - start_time_binary) / 60, "seconds")
 
-# 2: A list that wasn't rotated at all
-print("2: A list that wasn't rotated at all: ",count_rotations(tests[2]['input']['nums']))
- 
-# 3: A list that was rotated just once.
-print("3: A list that was rotated just once: ",count_rotations(tests[3]['input']['nums']))
+print("\n----Bonus 3: Searching in a Rotated List----\n")
 
-# 4: A list that was rotated n-1 times, where n is the size of the list.
-print("4: A list that was rotated n-1 times, where n is the size of the list: ",count_rotations(tests[4]['input']['nums']))
+"""
+You are given list of numbers, obtained by rotating a sorted list an unknown number 
+of times. You are also given a target number. Write a function to find the position 
+of the target number within the rotated list. You can assume that all the numbers 
+in the list are unique.
 
-# 5: A list that was rotated n times, where n is the size of the list
-print("5: A list that was rotated n times, where n is the size of the list: ",count_rotations(tests[5]['input']['nums']))
+Example: In the rotated sorted list [5, 6, 9, 0, 2, 3, 4], the target number 2 
+occurs at position 5.
 
-# 6: test empty list
-print("6: empty list: ", count_rotations(tests[6]['input']['nums']))
+Solution: "Target is number 2"
+1. if the mid_number is less than target [5, 6, 9, 0, 2, 3, 4], it means that the number is in right. 
+2. if the mid_number is greater than target [4, 5, 6, 9, 0, 2, 3], check if mid+1 is less 
+than target, if yes then number is in right.
+3. if the mid_number is greater than target [0, 2, 3, 4, 5, 6, 9], check if mid+1 is less 
+than target, if no, then number is in left.
+"""
 
-# 7: test list with one element
-print("7: list with one element: ",count_rotations(tests[7]['input']['nums']))
+test_new = []
 
-print("\nTime taken by Binary search using binary_search method: ", (time.time() - start_time_binary) / 60, "seconds")
+# 9: search in rotated list
+test_new.append({
+    'message':'9: search in rotated list when mid is smaller: ',
+    'input': {
+        'nums': [5, 6, 9, 0, 2, 3, 4],
+        'target': 2
+    },
+    'output': 5
+})
+
+test_new.append({
+    'message':'10: search in rotated list when mid is greater: ',
+    'input': {
+        'nums': [4, 5, 6, 9, 0, 2, 3],
+        'target': 2
+    },
+    'output': 6
+})
+
+test_new.append({
+    'message':'11: search in rotated list when list is not rotated: ',
+    'input': {
+        'nums': [0, 2, 3, 4, 5, 6, 9],
+        'target': 2
+    },
+    'output': 2
+})
+
+def locate_target(list_nums, target):
+    lo, hi = 0, len(list_nums) - 1
+    
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        mid_number = list_nums[mid]
+        
+        # print("lo:", lo, ", hi:", hi, ", mid:", mid, ", mid_number:", mid_number)
+        
+        if mid_number == target:
+            return mid + 1
+        # 1. if the mid_number is less than target [5, 6, 9, 0, 2, 3, 4], 
+        # it means that the number is in right. 
+        elif mid_number < target:
+            lo = mid + 1  
+        
+        # 2. if the mid_number is greater than target [4, 5, 6, 9, 0, 2, 3], 
+        # check if mid+1 is less than target, if YES then number is in right.
+        # 3. if the mid_number is greater than target [0, 2, 3, 4, 5, 6, 9], 
+        # check if mid+1 is less than target, if NO, then number is in left.
+        elif mid_number > target:
+            if list_nums[mid+1] < target:
+                lo = mid + 1 
+            else:
+                hi = mid - 1  
+    
+    return 0
+
+
+# start_time_binary = time.time()
+
+for i in range(0, len(test_new)):
+    result = locate_target(test_new[i]['input']['nums'], test_new[i]['input']['target'])
+    message = test_new[i]['message']
+    output = test_new[i]['output']
+    print(f"{message}:{result}, Does the result match the output? {result == output}")
+
+# print("\nTime taken by Binary search for searching a target position in a repeted rotating list : ", (time.time() - start_time_binary) / 60, "seconds")
