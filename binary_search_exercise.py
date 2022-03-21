@@ -213,7 +213,77 @@ def locate_card(cards, query):
             lo = mid + 1
     return -1
 
-# result = locate_card(test['input']['cards'], test['input']['query'])
+# result = locate_card(tests[8]['input']['cards'], tests[8]['input']['query'])
 # print(result)
 
-evaluate_test_cases(locate_card, tests)
+# evaluate_test_cases(locate_card, tests)
+
+print("\n-------------------Get the first and last position in array-------------------\n")
+
+"""
+Question: Given an array of integers nums sorted in ascending order,
+find the starting and ending position of a given number.
+"""
+def binary_search(lo, hi, condition):
+    """
+        1. If the low is less than or equal to the high, get the mid position 
+        and its number in list.
+        2. Check if the mid_number is the query number, if mid_number equals to 
+        query check if the mid is greater to 0 and the mid-1 position number 
+        is equal to query. In this condition for true retrun 'left' to check left
+        of found as we got the fitst occurance of the query.
+        3. Else if mid_number < query, retrun 'right' to check in the 2nd part of list.
+        4. Else, return 'left' to check in the first part of list.
+
+    """
+    while lo <= hi:
+        print("lo:", lo, ", hi:", hi)
+        mid = (lo + hi) // 2
+        result = condition(mid)
+        print(result)
+        if result == 'found':
+            return mid
+        elif result == 'left':
+            hi = mid - 1
+        else:
+            lo = mid + 1
+    return -1
+
+
+def first_position(nums, query):
+    def condition(mid):
+        print("first_position: ","mid:", mid, ", mid_number:", nums[mid])
+        if nums[mid] == query:
+            # start from left
+            if mid > 0 and nums[mid-1] == query:
+                return 'left'
+            return 'found'
+        elif nums[mid] < query:
+            return 'right'
+        else:
+            return 'left'
+    return binary_search(0, len(nums)-1, condition)
+
+def last_position(nums, query):
+    def condition(mid):
+        print("last_position: ","mid:", mid, ", mid_number:", nums[mid])
+        if nums[mid] == query:
+            # start from right or end of the list
+            if mid < len(nums)-1 and nums[mid+1] == query:
+                return 'right'
+            return 'found'
+        elif nums[mid] < query:
+            return 'right'
+        else:
+            return 'left'
+    return binary_search(0, len(nums)-1, condition)
+
+def first_and_last_position(nums, query):
+    return first_position(nums, query), last_position(nums, query)
+
+print(sorted(tests[8]['input']['cards']))
+print(tests[8]['input']['query'])
+
+# [0, 0, 0, 2, 2, 2, 3, 6, 6, 6, 6, 6, 6, 8, 8]
+result = first_and_last_position(sorted(tests[8]['input']['cards']), tests[8]['input']['query'])
+print(result)
