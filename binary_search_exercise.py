@@ -220,6 +220,8 @@ def locate_card(cards, query):
 
 print("\n-------------------Get the first and last position in array-------------------\n")
 
+import inspect
+
 """
 Question: Given an array of integers nums sorted in ascending order,
 find the starting and ending position of a given number.
@@ -237,10 +239,10 @@ def binary_search(lo, hi, condition):
 
     """
     while lo <= hi:
-        print("lo:", lo, ", hi:", hi)
+        print("Calling function Name: ",inspect.stack()[1].function,", lo:", lo, ", hi:", hi)
         mid = (lo + hi) // 2
         result = condition(mid)
-        print(result)
+        print("Calling function Name: ",inspect.stack()[1].function,", result: ",result)
         if result == 'found':
             return mid
         elif result == 'left':
@@ -263,6 +265,7 @@ def first_position(nums, query):
         else:
             return 'left'
     return binary_search(0, len(nums)-1, condition)
+    # end of first_position method
 
 def last_position(nums, query):
     def condition(mid):
@@ -277,6 +280,7 @@ def last_position(nums, query):
         else:
             return 'left'
     return binary_search(0, len(nums)-1, condition)
+    # end of last_position method
 
 def first_and_last_position(nums, query):
     return first_position(nums, query), last_position(nums, query)
