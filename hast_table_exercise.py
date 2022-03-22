@@ -188,6 +188,7 @@ from textwrap import indent
 class HashTable:
     def __init__(self, max_size=MAX_HASH_TABLE_SIZE):
         self.hash_list = [None] * max_size  
+        self.size_of_table = 0
 
     def get_valid_index(self, key):
         # Use Python's in-built `hash` function and implement linear probing
@@ -217,7 +218,7 @@ class HashTable:
         # Implement the logic for "find" here
          # 1. Find the index for the key using index_order
         idx = self.get_valid_index(key)
-        
+
         # 2. Retrieve the data stored at the index
         kv = self.hash_list[idx]
         
@@ -233,8 +234,16 @@ class HashTable:
         # 1. Find the index for the key using get_valid_index
         idx = self.get_valid_index(key)
 
+        # Track the size of the hash table 
+        # i.e. number of key-value pairs so that len(table) has complexity O(1).
+        kv = self.hash_list[idx]
+        if not kv:
+            self.size_of_table += 1
+ 
         # 2. Store the key-value pair at the right index
         self.hash_list[idx] = (key, value)
+        
+        
 
     # get a generator   
     def __iter__(self):
@@ -242,7 +251,7 @@ class HashTable:
 
     # Get length of class
     def __len__(self):
-        return len([x for x in self])
+        return self.size_of_table
 
     def __repr__(self):        
         pairs = [indent("{} : {}".format(repr(kv[0]), repr(kv[1])), '  ') for kv in self]
@@ -269,6 +278,9 @@ table['a'] = 99
 
 #get list
 print(table)
+
+# length of the table
+print("\nLength: ",len(table))
         
 
         
