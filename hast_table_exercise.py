@@ -48,3 +48,43 @@ print('\n--QUESTION 1: Create a Python list of size `MAX_HASH_TABLE_SIZE`, \
 hash_list = [None] * MAX_HASH_TABLE_SIZE
 
 print('len(hash_list) == MAX_HASH_TABLE_SIZE: ',len(hash_list) == MAX_HASH_TABLE_SIZE)
+
+print('\n---------------Impliment Hashing Function------------------\n')
+
+"""
+Algorithm for hashing, which can convert strings into numeric list indices.
+
+1. Iterate over the string, character by character
+2. Convert each character to a number using Python's built-in ord function.
+3. Add the numbers for each character to obtain the hash for the entire string
+4. Take the remainder of the result with the size of the data list
+"""
+def index_order(a_string, hash_list):
+    order = 0
+    for char in a_string:
+        order += ord(char) # get the ascii value using ord()
+    result = order % len(hash_list)  # get the reminder
+    return result
+
+print(index_order("Pranay", hash_list))
+
+print('\n-------Insert-------\n')
+
+key, value = "Pranay", 7030026662
+idx = index_order(key,hash_list)
+#one way
+hash_list[idx] = (key, value)
+
+# another
+hash_list[index_order('Hemanth', hash_list)] = ('Hemanth', '9595949494')
+
+print('\n-------Find-------\n')
+idx = index_order('Hemanth', hash_list)
+idx
+key, value = hash_list[idx]
+print(key, value)
+
+print('\n-------List-------\n')
+# print(list(filter(lambda x: x is not None, hash_list)))
+pairs = [kv for kv in hash_list if kv is not None]
+print(pairs)    
