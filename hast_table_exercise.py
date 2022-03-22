@@ -72,7 +72,7 @@ List: List all the keys stored in the hash table
 
 """
 
-class HashTable:
+class BasicHashTable:
     def __init__(self, max_size=MAX_HASH_TABLE_SIZE):
         # 1. Create a list of size `max_size` with all values None
         self.hash_list = [None] * max_size
@@ -144,10 +144,10 @@ class HashTable:
 
 
 
-basic_table = HashTable()
+basic_table = BasicHashTable()
 print('len(basic_table.hash_list) == 4096?', len(basic_table.hash_list) == 4096)
 
-basic_table = HashTable(max_size=1024)
+basic_table = BasicHashTable(max_size=1024)
 print('len(basic_table.hash_list) == 1024?', len(basic_table.hash_list) == 1024)
 
 # Insert some values
@@ -170,12 +170,105 @@ print("\n-----QUESTION 4: Handling Collisions with Linear Probing----------\n")
 print("basic_table.get_valid_index('listen') == 655? ", basic_table.get_valid_index('listen') == 655)
 
 basic_table.insert('listen', 99)
+basic_table.insert('silent', 200)
 
 # Colliding key 'silent' should return next index
 print("basic_table.get_valid_index('silent') == 656? ", basic_table.get_valid_index('silent') == 656)
 
 print(basic_table.list_all())
 
-print("\n------For Question 5, I have implimented the probing logic in the HashTable class----\n")
+print("\n------For Question 5----\n")
+print("I have implimented the probing logic in the BasicHashTable class.")
 
+print("\n---Python Dictionary uisng Hast table, (Optional) Question: Implement a \
+ python-friendly interface for the hash table.-------\n")
 
+from textwrap import indent
+
+class HashTable:
+    def __init__(self, max_size=MAX_HASH_TABLE_SIZE):
+        self.hash_list = [None] * max_size  
+
+    def get_valid_index(self, key):
+        # Use Python's in-built `hash` function and implement linear probing
+        idx = hash(key) % len(self.hash_list)
+        
+        while True:
+            # Get the key-value pair stored at idx
+            kv = self.hash_list[idx]
+            
+            # If it is None, return the index, this index is empty to store kv.
+            if not kv:
+                return idx
+            
+            # If the stored key matches the given key, return the index
+            k, v = kv
+            if k == key:
+                return idx
+            
+            # Move to the next index
+            idx += 1
+            
+            # Go back to the start if you have reached the end of the array
+            if idx == len(self.hash_list):
+                idx = 0
+
+    def __getitem__(self, key):
+        # Implement the logic for "find" here
+         # 1. Find the index for the key using index_order
+        idx = self.get_valid_index(key)
+        
+        # 2. Retrieve the data stored at the index
+        kv = self.hash_list[idx]
+        
+        # 3. Return the value if found, else return None
+        if kv is None:
+            return None
+        else:
+            key, value = kv
+            return value
+
+    def __setitem__(self, key, value):
+        # Implement the logic for "insert/update" here
+        # 1. Find the index for the key using get_valid_index
+        idx = self.get_valid_index(key)
+
+        # 2. Store the key-value pair at the right index
+        self.hash_list[idx] = (key, value)
+
+    # get a generator   
+    def __iter__(self):
+        return (value for value in self.hash_list if value is not None)
+
+    # Get length of class
+    def __len__(self):
+        return len([x for x in self])
+
+    def __repr__(self):        
+        pairs = [indent("{} : {}".format(repr(kv[0]), repr(kv[1])), '  ') for kv in self]
+        return "{\n" + "{}".format(',\n'.join(pairs)) + "\n}"
+    
+    def __str__(self):
+        return repr(self)
+
+# Create a hash table
+table = HashTable()
+
+# Insert some key-value pairs
+table['a'] = 1
+table['b'] = 34
+table['silent'] = 33
+table['listen'] = 32
+
+# Retrieve the inserted values
+print(table['a'] == 1 and table['b'] == 34)
+print(table['silent'] == 33 and table['listen'] == 32)
+
+# Update a value
+table['a'] = 99
+
+#get list
+print(table)
+        
+
+        
