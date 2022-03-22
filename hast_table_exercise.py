@@ -72,22 +72,48 @@ List: List all the keys stored in the hash table
 
 """
 
-class BasicHashTable:
+class HashTable:
     def __init__(self, max_size=MAX_HASH_TABLE_SIZE):
         # 1. Create a list of size `max_size` with all values None
         self.hash_list = [None] * max_size
 
+    # get the index value for a string
     def index_order(self, a_string, hash_list):
         order = 0
         for char in a_string:
             order += ord(char) # get the ascii value using ord()
         result = order % len(hash_list)  # get the reminder
         return result
+
+    # handle linear probing
+    def get_valid_index(self, key):
+        # Start with the index returned by index_order
+        idx = self.index_order(key,self.hash_list)
+        
+        while True:
+            # Get the key-value pair stored at idx
+            kv = self.hash_list[idx]
+            
+            # If it is None, return the index, this index is empty to store kv.
+            if not kv:
+                return idx
+            
+            # If the stored key matches the given key, return the index
+            k, v = kv
+            if k == key:
+                return idx
+            
+            # Move to the next index
+            idx += 1
+            
+            # Go back to the start if you have reached the end of the array
+            if idx == len(self.hash_list):
+                idx = 0
         
     def insert(self, key, value):
         """Insert a new key-value pair"""
-        # 1. Find the index for the key using index_order
-        idx = self.index_order(key,self.hash_list)
+        # 1. Find the index for the key using get_valid_index
+        idx = self.get_valid_index(key)
         # 2. Store the key-value pair at the right index
         self.hash_list[idx] = (key, value)
     
@@ -116,10 +142,12 @@ class BasicHashTable:
         """List all the keys"""
         return [kv for kv in self.hash_list if kv is not None]
 
-basic_table = BasicHashTable()
+
+
+basic_table = HashTable()
 print('len(basic_table.hash_list) == 4096?', len(basic_table.hash_list) == 4096)
 
-basic_table = BasicHashTable(max_size=1024)
+basic_table = HashTable(max_size=1024)
 print('len(basic_table.hash_list) == 1024?', len(basic_table.hash_list) == 1024)
 
 # Insert some values
@@ -136,6 +164,18 @@ print("basic_table.find('Aakash') == '7777777777'? ", basic_table.find('Aakash')
 # Get the list of keys
 print(basic_table.list_all() )
 
+print("\n-----QUESTION 4: Handling Collisions with Linear Probing----------\n")
 
+# New key 'listen' should return expected index
+print("basic_table.get_valid_index('listen') == 655? ", basic_table.get_valid_index('listen') == 655)
+
+basic_table.insert('listen', 99)
+
+# Colliding key 'silent' should return next index
+print("basic_table.get_valid_index('silent') == 656? ", basic_table.get_valid_index('silent') == 656)
+
+print(basic_table.list_all())
+
+print("\n------For Question 5, I have implimented the probing logic in the HashTable class----\n")
 
 
