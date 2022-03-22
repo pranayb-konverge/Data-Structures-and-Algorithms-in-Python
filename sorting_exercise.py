@@ -273,4 +273,100 @@ def quicksort(nums, start=0, end=None):
 
     return nums
 
-results = evaluate_test_cases(quicksort, tests)
+# results = evaluate_test_cases(quicksort, tests)
+
+print("\n---------------Custom Comparison Functions------------\n")
+
+"""
+QUESTION 1: You're working on a new feature on Jovian called "Top Notebooks of the Week". 
+Write a function to sort a list of notebooks in decreasing order of likes. Keep in mind 
+that up to millions of notebooks can be created every week, so your function needs to be 
+as efficient as possible.
+
+First, we need to sort objects, not just numbers. Also, we want to sort them in the 
+descending order of likes. To achieve this, all we need is a custom comparison function 
+to compare two notebooks.
+"""
+
+class Notebook:
+    def __init__(self, title, username, likes):
+        self.title, self.username, self.likes = title, username, likes
+
+    # we say notebook1 is lesser than notebook2 if it has higher likes, because we want to sort 
+    # the notebooks in decreasing order of likes.
+    def compare_likes(self, notebook1, notebook2):
+        if notebook1.likes > notebook2.likes:
+            return 'lesser'
+        elif notebook1.likes == notebook2.likes:
+            return 'equal'
+        elif notebook1.likes < notebook2.likes:
+            return 'greater'
+
+    def compare_username(self, notebook1, notebook2):
+        if notebook1.username < notebook2.username and notebook1.title < notebook2.title:
+            return 'lesser'
+        elif notebook1.username == notebook2.username and notebook1.title == notebook2.title:
+            return 'equal'
+        elif notebook1.username > notebook2.username and notebook1.title > notebook2.title:
+            return 'greater'
+
+    # this will check for ascending order
+    def default_compare(self, x, y):
+        if x < y:
+            return 'lesser'
+        elif x == y:
+            return 'equal'
+        else:
+            return 'greater'
+
+    def merge_sort(self, objs, compare=default_compare):
+        # Already sorted 
+        if len(objs) < 2:
+            return objs
+        # get the pivot/mid
+        mid = len(objs) // 2
+        # do a recursive call to merge_sort and merge and get a merged list
+        return self.merge(self.merge_sort(objs[:mid], compare), 
+                    self.merge_sort(objs[mid:], compare), 
+                    compare)
+
+    def merge(self,left, right, compare):
+        i_index, j_index, merged = 0, 0, []
+        while i_index < len(left) and j_index < len(right):
+            result = compare(left[i_index], right[j_index])
+            # append the left part first so we can get decreasing order
+            if result == 'lesser' or result == 'equal':
+                merged.append(left[i_index])
+                i_index += 1
+            else:
+                merged.append(right[j_index])
+                j_index += 1
+        return merged + left[i_index:] + right[j_index:]
+            
+    def __repr__(self):
+        return 'Notebook <"{}/{}", {} likes>\n'.format(self.username, self.title, self.likes)
+
+notebook0 = Notebook('pytorch-basics', 'aakashns', 373)
+notebook1 = Notebook('linear-regression', 'siddhant', 532)
+notebook2 = Notebook('logistic-regression', 'vikas', 31)
+notebook3 = Notebook('feedforward-nn', 'sonaksh', 94)
+notebook4 = Notebook('cifar10-cnn', 'biraj', 2)
+notebook5 = Notebook('cifar10-resnet', 'tanya', 29)
+notebook6 = Notebook('anime-gans', 'hemanth', 80)
+notebook7 = Notebook('python-fundamentals', 'vishal', 136)
+notebook8 = Notebook('python-functions', 'aakashns', 74)
+notebook9 = Notebook('python-numpy', 'siddhant', 92)
+
+notebooks = [notebook0, notebook1, notebook2, notebook3, notebook4, notebook5  
+,notebook6, notebook7, notebook8, notebook9]
+print("Original Notbook list:")
+print(notebooks)
+
+print("\nSorted in decending order Notbook list:")
+sorted_notebook = notebook0.merge_sort(notebooks, notebook0.compare_likes)
+print(sorted_notebook)
+
+
+print("\nSorted in username/title order Notbook list:")
+sorted_notebook = notebook0.merge_sort(notebooks, notebook0.compare_username)
+print(sorted_notebook)
