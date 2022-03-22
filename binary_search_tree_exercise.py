@@ -475,3 +475,79 @@ tree_b = node_obj.balance_bst(tree_a)
 display_keys(tree_b)
 
 print("\n----------------A Python-Friendly Treemap----------------\n")
+
+"""
+QUESTION 1: As a senior backend engineer at Jovian, you are tasked with developing a
+fast in-memory data structure to manage profile information (username, name and email) 
+for 100 million users. It should allow the following operations to be performed efficiently:
+
+- Insert the profile information for a new user.
+- Find the profile information of a user, given their username
+- Update the profile information of a user, given their usrname
+- List all the users of the platform, sorted by username
+
+You may assume that usernames are unique.
+"""
+
+class TreeMap():
+    def __init__(self):
+        self.root = None
+        
+    def __setitem__(self, key, value):
+        node = node_obj.find(self.root, key)
+        if not node:
+            self.root = node_obj.insert(self.root, key, value)
+            self.root = node_obj.balance_bst(self.root)
+        else:
+            node_obj.update(self.root, key, value)
+            
+        
+    def __getitem__(self, key):
+        node = node_obj.find(self.root, key)
+        return node.value if node else None
+    
+    def __iter__(self):
+        return (x for x in node_obj.list_all(self.root))
+    
+    def __len__(self):
+        return tree_size(self.root)
+   
+    def display(self):
+        return display_keys(self.root)
+
+# __init__
+treemap = TreeMap()
+# print(treemap.display())
+
+# __setitem__
+treemap['aakash'] = aakash
+treemap['jadhesh'] = jadhesh
+treemap['sonaksh'] = sonaksh
+
+print(treemap.display())
+
+# __getitem__
+print(treemap['jadhesh'])
+
+# __len__
+print(len(treemap))
+
+# __setitem__
+treemap['biraj'] = biraj
+treemap['hemanth'] = hemanth
+treemap['siddhant'] = siddhant
+treemap['vishal'] = vishal
+
+print(treemap.display())
+
+# __iter__
+for key, value in treemap:
+    print(key, value)
+
+print(list(treemap))
+print()
+
+print("Before: ",treemap['aakash'])
+# modify the data of user
+treemap['aakash'] = User(username='aakash', name='Aakash N S', email='aakashns@example.com')
+print("After: ",treemap['aakash'])
