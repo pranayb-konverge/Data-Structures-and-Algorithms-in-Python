@@ -490,6 +490,8 @@ You may assume that usernames are unique.
 """
 
 class TreeMap():
+    node_obj = BSTNode(None)
+    
     def __init__(self):
         self.root = None
         
