@@ -333,6 +333,20 @@ class BSTNode():
         # inorder way of listing all the nodes
         return self.list_all(node.left) + [(node.key, node.value)] + self.list_all(node.right)
 
+    def is_balanced(self, node):
+        if node is None:
+            return True, 0
+        # check if the left subtree is balanced
+        balanced_left_node, height_left_node = self.is_balanced(node.left)
+        # check if the right subtree is balanced
+        balanced_right_node, height_right_node = self.is_balanced(node.right)
+        # the difference between heights of left subtree and right subtree is not more than 1.
+        # we need absolute number so abs() is used (right side is greater than left side)
+        balanced = balanced_left_node and balanced_right_node and abs(height_left_node - height_right_node) <=1
+        # get the height of the tree
+        height = 1 + max(height_left_node, height_right_node)
+        return balanced, height
+
 # here we are defining the tree nodes with key,value and the edges (left-right nodes)
 # this is without the insert method
 tree = BSTNode(jadhesh.username, jadhesh)
@@ -387,3 +401,33 @@ print("\n--QUESTION 13: Write a function to retrieve all the key-values\
 print(node_obj.list_all(tree))
 
 print("\n--QUESTION 14: Write a function to determine if a binary tree is balanced.--\n")
+is_balanced = node_obj.is_balanced(tree)[0]
+height = node_obj.is_balanced(tree)[1]
+print(f"Is the tree balanced? {is_balanced}, height of tree? {height}")
+
+print("\n--Exercise: Is the tree shown below balanced? Why or why not? \
+    Create this tree and check if it's balanced using the is_balanced function.--\n")
+
+tanya = User('tanya', 'Tanya Goel', 'tanya.g@example.com')
+tree_new = node_obj.insert(tree, tanya.username, tanya)
+
+# uuvi = User('uuvi', 'uuvi Goel', 'uuvi.g@example.com')
+# tree_new = node_obj.insert(tree, uuvi.username, uuvi)
+
+display_keys(tree_new)
+
+is_balanced = node_obj.is_balanced(tree_new)[0]
+height = node_obj.is_balanced(tree_new)[1]
+print(f"Is the tree balanced? {is_balanced}, height of tree? {height}")
+if is_balanced:
+    print("""Why is it Balanced? \nAns: A binary tree in which the height of the left and 
+    right subtree of any node differ by not more than 1. In this example, 
+    only 'tanya' was added if she had another node in left or right, 
+    it would be an imbalanced tree.""")
+else:
+    print("""Why is it not Balanced? \nAns: A binary tree in which the height of the left and 
+    right subtree of any node differ by not more than 1. In this example, 
+    only 'tanya' was added and she had another left node 'uuvi', which makes 
+    the node diffrence to more than 1. So it is an imbalanced tree.""")
+
+
