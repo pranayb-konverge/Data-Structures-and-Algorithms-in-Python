@@ -248,21 +248,23 @@ print("\n-----------QUESTION 8: Write a function to check if a binary tree is a 
 search tree (BST). \nQUESTION 9: Write a function to find the maximum key in a binary tree.\
 \nQUESTION 10: Write a function to find the minimum key in a binary tree.--------------\n")
 
-def remove_none(nums):
-    return [x for x in nums if x is not None]
+# get only non None nodes from the list
+def remove_none(list_nums):
+    return [x for x in list_nums if x is not None]
 
 def is_bst(node):
     if node is None:
         return True, None, None
     
+    # this recursive call will get the boolean value from the node's left and right.
     is_bst_left, min_left, max_left = is_bst(node.left)
     is_bst_right, min_right, max_right = is_bst(node.right)
 
-    
+    # get the boolean value
     is_bst_node = (is_bst_left and is_bst_right and 
               (max_left is None or max_left < node.key) and 
               (min_right is None or min_right > node.key ))
-    
+    # get the min and max nodes in the the whole tree
     min_key = min(remove_none([min_left, node.key, min_right]))
     max_key = max(remove_none([max_left, node.key, max_right]))
     
@@ -283,14 +285,56 @@ print(is_bst(new_root))
 
 
 print("\n-----------------------Storing Key-Value Pairs using BSTs------------------\n")
+# This class will be useful to to represent the nodes of tree
+# The node has its identity=key, data=value, left and right are the edges and 
+# parent is to know who is the nodes parent
 class BSTNode():
-    def __init__(self, key, value=None):
+    def __init__(self, key=None, value=None):
         self.key = key
         self.value = value
         self.left = None
         self.right = None
         self.parent = None
 
+    def insert(self, node, key, value):
+        # root node
+        if node is None:
+            node = BSTNode(key, value)
+        # if key is less than the node key put it to the left of node vice-versa
+        elif key < node.key:
+            node.left = self.insert(node.left, key, value)
+            node.left.parent = node
+        elif key > node.key:
+            node.right = self.insert(node.right, key, value)
+            node.right.parent = node
+        return node
+
+    def find(self, node, key):
+        if node is None:
+            return None
+        if key == node.key:
+            return node
+        # if given key is less than the node's key it means we need to go left and vice-versa
+        if key < node.key:
+            return self.find(node.left, key)
+        if key > node.key:
+            return self.find(node.right, key)
+
+    # find the value and update the target
+    def update(self,node, key, value):
+        target = self.find(node, key)
+        if target is not None:
+            target.value = value
+
+    # get all the nodes in list
+    def list_all(self,node):
+        if node is None:
+            return []
+        # inorder way of listing all the nodes
+        return self.list_all(node.left) + [(node.key, node.value)] + self.list_all(node.right)
+
+# here we are defining the tree nodes with key,value and the edges (left-right nodes)
+# this is without the insert method
 tree = BSTNode(jadhesh.username, jadhesh)
 
 tree.left = BSTNode(biraj.username, biraj)
@@ -306,24 +350,40 @@ display_keys(tree)
 
 print("\n-----------QUESTION 11: Write a function to insert a new node into a BST.----\n")
 
-def insert(node, key, value):
-    # root node
-    if node is None:
-        node = BSTNode(key, value)
-    # if key is less than the node key put it to the left of node vice-versa
-    elif key < node.key:
-        node.left = insert(node.left, key, value)
-        node.left.parent = node
-    elif key > node.key:
-        node.right = insert(node.right, key, value)
-        node.right.parent = node
-    return node
-
-tree = insert(None, jadhesh.username, jadhesh)
-insert(tree, sonaksh.username, sonaksh)
-insert(tree, biraj.username, biraj)
-insert(tree, aakash.username, aakash)
-insert(tree, hemanth.username, hemanth)
-insert(tree, siddhant.username, siddhant)
-insert(tree, vishal.username, siddhant)
+# the None is for root node and this is created using the inser method
+node_obj = BSTNode(None)
+# this is the root node and we can call it as tree
+tree = node_obj.insert(None, jadhesh.username, jadhesh)
+node_obj.insert(tree, sonaksh.username, sonaksh)
+node_obj.insert(tree, biraj.username, biraj)
+node_obj.insert(tree, aakash.username, aakash)
+node_obj.insert(tree, hemanth.username, hemanth)
+node_obj.insert(tree, siddhant.username, siddhant)
+node_obj.insert(tree, vishal.username, vishal)
 display_keys(tree)
+
+print("\n------QUESTION 11: Find the value associated with a given key in a BST.----\n")
+node = node_obj.find(tree, "biraj")
+
+print(f"Key: {node.key}, \nValue: {node.value}, \nLeft Node: {node.left}, \nRight Node: {node.right}")
+
+print("\n--QUESTION 12: Write a function to update the value \
+    associated with a given key within a BST--\n")
+
+node = node_obj.find(tree, 'hemanth')
+print("Before:")
+print(f"Key: {node.key}, \nValue: {node.value}, \nLeft Node: {node.left}, \nRight Node: {node.right}")
+
+# node, key, value
+node_obj.update(tree, 'hemanth', User('hemanth', 'Hemanth Jinnar', 'hemanth.jinnar@example.com'))
+node = node_obj.find(tree, 'hemanth')
+
+print("\nAfter:")
+print(f"Key: {node.key}, \nValue: {node.value}, \nLeft Node: {node.left}, \nRight Node: {node.right}")
+
+print("\n--QUESTION 13: Write a function to retrieve all the key-values\
+     pairs stored in a BST in the sorted order of keys.--\n")
+
+print(node_obj.list_all(tree))
+
+print("\n--QUESTION 14: Write a function to determine if a binary tree is balanced.--\n")
