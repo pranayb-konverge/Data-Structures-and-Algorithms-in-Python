@@ -347,6 +347,30 @@ class BSTNode():
         height = 1 + max(height_left_node, height_right_node)
         return balanced, height
 
+    def make_balanced_bst(self, data, lo=0, hi=None, parent=None):
+        if hi is None:
+            # length of tree data list
+            hi = len(data) - 1
+        if lo > hi:
+            # no data list is provided
+            return None
+        # get the middle element from the data list as root and set it as BSTNode root
+        mid = (lo + hi) // 2
+        # key=username and value=User obj
+        key, value = data[mid]
+        root = BSTNode(key, value)
+
+        root.parent = parent
+        # using reccursion we will create the left half of the tree and vice-versa
+        # as per the binary search, to go left we need to do mid-1 and vice-versa in a list.
+        root.left = self.make_balanced_bst(data, lo, mid-1, root)
+        root.right = self.make_balanced_bst(data, mid+1, hi, root)
+        
+        return root
+
+    def balance_bst(self,tree):
+        return self.make_balanced_bst(self.list_all(tree))
+
 # here we are defining the tree nodes with key,value and the edges (left-right nodes)
 # this is without the insert method
 tree = BSTNode(jadhesh.username, jadhesh)
@@ -430,4 +454,24 @@ else:
     only 'tanya' was added and she had another left node 'uuvi', which makes 
     the node diffrence to more than 1. So it is an imbalanced tree.""")
 
+print("\n--QUESTION 15: Write a function to create a balanced \
+    BST from a sorted list/array of key-value pairs--\n")
 
+data = [(user.username, user) for user in users]
+# print(data)
+tree_new = node_obj.make_balanced_bst(data)
+display_keys(tree_new)
+
+print("\n--QUESTION 16: Write a function to balance an unbalanced binary search tree.--\n")
+
+print("Unbalanced BST:")
+tree_a = None
+for user in users:
+    tree_a = node_obj.insert(tree_a, user.username, user)
+display_keys(tree_a)
+
+print("Balanced BST:")
+tree_b = node_obj.balance_bst(tree_a)
+display_keys(tree_b)
+
+print("\n----------------A Python-Friendly Treemap----------------\n")
