@@ -1,22 +1,50 @@
-print("\n-----------Creat a function to implement the hashing algorithm.-------------\n")
+"""
+Dictionaries in Python are implemented using a data structure called hash table. 
+A hash table uses a list/array to store the key-value pairs, and uses a hashing 
+function to determine the index for storing or retrieving the data associated 
+with a given key.
+"""
+
+print("\n-----------Creat a Class to implement the hashing algorithm.-------------\n")
+
+"""
+Your objective in this assignment is to implement a HashTable class which supports 
+the following operations:
+
+Insert: Insert a new key-value pair
+Find: Find the value associated with a key
+Update: Update the value associated with a key
+List: List all the keys stored in the hash table
+
+"""
+
+class HashTable:
+
+    def insert(self, key, value):
+        """Insert a new key-value pair"""
+        pass
+    
+    def find(self, key):
+        """Find the value associated with a key"""
+        pass
+    
+    def update(self, key, value):
+        """Change the value associated with a key"""
+        pass
+    
+    def list_all(self):
+        """List all the keys"""
+        pass
+
+# As a first step is to create a Python list which will hold all the key-value pairs. 
+# We'll start by creating a list of a fixed size.
 
 # global variable
-MAX_HASH_TABLE_SIZE = 1111
-# List of size MAX_HASH_TABLE_SIZE with all values None
-data_list = [None] * MAX_HASH_TABLE_SIZE
+MAX_HASH_TABLE_SIZE = 4096
 
-def get_index(data_list, a_string):
-    # Variable to store the result (updated after each iteration)
-    result = 0
-    
-    for a_character in a_string:
-        # Convert the character to a number (using ord)
-        a_number = ord(a_character)
-        # Update result by adding the number
-        result += a_number
-    
-    # Take the remainder of the result with the size of the data list
-    list_index = result % len(data_list)
-    return list_index
+print('\n--QUESTION 1: Create a Python list of size `MAX_HASH_TABLE_SIZE`, \
+    with all the values set to `None`.--\n')
 
-print(f"Get the index in data list: {get_index(data_list, 'Pranay')}")
+hash_list = [None] * MAX_HASH_TABLE_SIZE
+
+print('len(hash_list) == MAX_HASH_TABLE_SIZE: ',len(hash_list) == MAX_HASH_TABLE_SIZE)
