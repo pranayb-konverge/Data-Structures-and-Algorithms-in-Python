@@ -72,22 +72,70 @@ List: List all the keys stored in the hash table
 
 """
 
-class HashTable:
+class BasicHashTable:
+    def __init__(self, max_size=MAX_HASH_TABLE_SIZE):
+        # 1. Create a list of size `max_size` with all values None
+        self.hash_list = [None] * max_size
 
+    def index_order(self, a_string, hash_list):
+        order = 0
+        for char in a_string:
+            order += ord(char) # get the ascii value using ord()
+        result = order % len(hash_list)  # get the reminder
+        return result
+        
     def insert(self, key, value):
         """Insert a new key-value pair"""
-        pass
+        # 1. Find the index for the key using index_order
+        idx = self.index_order(key,self.hash_list)
+        # 2. Store the key-value pair at the right index
+        self.hash_list[idx] = (key, value)
     
     def find(self, key):
         """Find the value associated with a key"""
-        pass
+         # 1. Find the index for the key using index_order
+        idx = self.index_order(key,self.hash_list)
+        
+        # 2. Retrieve the data stored at the index
+        kv = self.hash_list[idx]
+        
+        # 3. Return the value if found, else return None
+        if kv is None:
+            return None
+        else:
+            key, value = kv
+            return value
     
     def update(self, key, value):
         """Change the value associated with a key"""
-        pass
+         # 1. Find the index for the key using index_order
+        idx = self.index_order(key,self.hash_list)
+        self.hash_list[idx] = (key,value)
     
     def list_all(self):
         """List all the keys"""
-        pass
+        return [kv for kv in self.hash_list if kv is not None]
+
+basic_table = BasicHashTable()
+print('len(basic_table.hash_list) == 4096?', len(basic_table.hash_list) == 4096)
+
+basic_table = BasicHashTable(max_size=1024)
+print('len(basic_table.hash_list) == 1024?', len(basic_table.hash_list) == 1024)
+
+# Insert some values
+basic_table.insert('Aakash', '9999999999')
+basic_table.insert('Hemanth', '8888888888')
+
+# Find a value
+print("basic_table.find('Hemanth') == '8888888888'? ", basic_table.find('Hemanth') == '8888888888')
+
+# Update a value
+basic_table.update('Aakash', '7777777777')
+print("basic_table.find('Aakash') == '7777777777'? ", basic_table.find('Aakash') == '7777777777')
+
+# Get the list of keys
+print(basic_table.list_all() )
+
+
 
 
