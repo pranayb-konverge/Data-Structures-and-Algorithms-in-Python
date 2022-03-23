@@ -1,12 +1,10 @@
-# lets represent the nodes and edges in the graphs
-# nodes are the points and edges are the connection between the points
-# for ref we can create nodes and edges using this image https://i.imgur.com/xkgMnwx.png
-from dis import dis
-from operator import ne
-from re import L
+"""
+lets represent the nodes and edges in the graphs
+nodes are the points and edges are the connection between the points
+for ref we can create nodes and edges using this image https://i.imgur.com/xkgMnwx.png
+"""
 
-
-print("\n---------------Print a simple graph with node and edges--------------\n")
+print("\n---------------Adjacency List - Print a simple graph with node and edges--------------\n")
 
 num_nodes = 5
 edges  = [(0,1), (0,4), (1,2), (1,3), (1,4), (2,3),(3,4)]
@@ -14,12 +12,12 @@ edges  = [(0,1), (0,4), (1,2), (1,3), (1,4), (2,3),(3,4)]
 class Graph:
     def __init__(self, num_nodes, edges):
         self.num_nodes = num_nodes
+        # create list of empty list 
         self.list_of_nodes = [[] for _ in range(num_nodes)]
         for node_a, node_b in edges:
-            # insert in the right list_of_nodes
+            # insert in the correct list_of_nodes
             self.list_of_nodes[node_a].append(node_b)
             self.list_of_nodes[node_b].append(node_a)
-        
     # lets print the graph in a better way
     def __repr__(self):
         return "\n".join(["Node {}: Edge connected with {}".format(node, neighbour) \
@@ -30,6 +28,30 @@ class Graph:
 
 new_graph = Graph(num_nodes, edges)
 print(new_graph)
+
+print("\n---------------Graph Matrix represent the nodes as 1-0 in the matrix--------------\n")
+
+class GraphMatrix:
+    def __init__(self, num_nodes, edges):
+        self.num_nodes = num_nodes
+        # create list of empty list 
+        self.adj_matrix = [[0 for _ in range(num_nodes)] for _ in range(num_nodes)]
+        for node_a, node_b in edges:
+            if node_a == node_b:
+                print("Same Node %d and %d" % (node_a, node_b))
+            # insert in the correct adj_matrix
+            self.adj_matrix[node_a][node_b] = 1
+            self.adj_matrix[node_b][node_a] = 1
+
+    # lets print the graph in a better way
+    def __repr__(self):
+         return '{}'.format(self.adj_matrix)                
+
+    def __str__(self):
+        return self.__repr__()
+
+new_graph_matrix = GraphMatrix(num_nodes, edges)
+print(new_graph_matrix)
 
 print("\n---------------Graph traversal - breadth-first search--------------\n")
 """
