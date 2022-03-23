@@ -1,12 +1,13 @@
-# 0-1 Knapsack Problem
+
 """
-Problem statement
+0-1 Knapsack Problem:
+Problem statement - 
 You’re in charge of selecting a football (soccer) team from a large pool of players. 
 Each player has a cost, and a rating. You have a limited budget. What is the highest 
 total rating of a team that fits within your budget. Assume that there’s no minimum or 
 maximum team size.
 
-General problem statemnt:
+General problem statement:
 
 Given n elements, each of which has a weight and a profit, determine the maximum profit 
 that can be obtained by selecting a subset of the elements weighing no more than w.
@@ -70,6 +71,7 @@ tests.append({
     'output': 19
 })
 
+
 """
 Solution: #### Recursion
 
@@ -88,13 +90,19 @@ We can recursively compute the maximum
 """
 from jovian.pythondsa import evaluate_test_cases
 
+print("\n---0-1 Knapsack Problem using recursion---\n")
+
 def max_profit_recursive(weights, profits,capacity, idx=0):
+    # reached end of the weight list
     if idx == len(weights):
         return 0
-    elif weights[idx] > capacity:
+    # if the weight is greater than the capacity, so we can skip the current index and 
+    # continue to next
+    elif weights[idx] >= capacity:
         return max_profit_recursive(weights, profits,capacity, idx+1)
     else:
-        # not picking any element
+        # not picking any element, so we can skip the current index and 
+        # continue to next
         option_a = max_profit_recursive(weights, profits,capacity, idx+1)
         # picking the element
         option_b = profits[idx] + max_profit_recursive(
@@ -103,6 +111,39 @@ def max_profit_recursive(weights, profits,capacity, idx=0):
 
 # evaluate_test_cases(max_profit_recursive, tests)
 
+print("\n---0-1 Knapsack Problem using memoization---\n")
+def max_profit_memo(capacity, weights, profits):
+    memo = {}
+    
+    def recurse(idx, remaining):
+        # The key will be saved in the memory
+        key = (idx, remaining)
+
+        # this is the avaialbility case, where the expected key is in memory,
+        # which may come from the 'else' part. 
+        if key in memo:
+            return memo[key]
+        # empty or end of the list
+        elif idx == len(weights):
+            memo[key] = 0
+        
+        # not picking any element, so we can skip the current index and 
+        # continue to next
+        elif weights[idx] > remaining:
+            memo[key] = recurse(idx+1, remaining)
+        
+        # picking the element
+        else:
+            memo[key] = max(recurse(idx+1, remaining), 
+                            profits[idx] + recurse(idx+1, remaining-weights[idx]))
+        return memo[key] 
+        
+    return recurse(0, capacity)
+
+# evaluate_test_cases(max_profit_memo, tests)
+
+print("\n---0-1 Knapsack Problem using Dynamic program---\n")
+
 # Dynamic program
 def max_profit_dp(weights, profits, capacity):
     rows = len(weights)
@@ -110,13 +151,15 @@ def max_profit_dp(weights, profits, capacity):
     table = [[0 for x in range(columns+1)] for x in range(rows+1)]
     for row in range(rows):
         for column in range(1, columns + 1):
-            # if not fit in the capacity of the table
+            # if not fit in the capacity of the table, so we can skip the current 
+            # index and continue to next
             if weights[row] > column:
                 table[row+1][column] = table[row][column]
+            # picking the element
             else:
                 table[row+1][column] = max(table[row][column],
                                         profits[row] + table[row][column - weights[row]])
     return table[-1][-1]                                    
 
-evaluate_test_cases(max_profit_dp, tests)
+# evaluate_test_cases(max_profit_dp, tests)
 
