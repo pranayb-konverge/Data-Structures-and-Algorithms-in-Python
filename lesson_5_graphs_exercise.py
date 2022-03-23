@@ -25,7 +25,7 @@ class Graph:
                 self.list_of_nodes.remove(list(edge))
         
     # lets print the graph in a better way
-    def display_list(self):
+    def display_graph(self):
         print(
             "\n".join(
             ["Node {}: Edge connected with {}".format(
@@ -37,10 +37,10 @@ class Graph:
 new_graph = Graph(num_nodes)
 for edge_a, edge_b in edges:
     new_graph.add_edge(edge_a, edge_b)
-new_graph.display_list()
+new_graph.display_graph()
 new_graph.remove_edge((1,4))
 print()
-new_graph.display_list()
+new_graph.display_graph()
 
 print("\n---------------Adjacency Matrix represent the nodes as 1-0 in the matrix--------------\n")
 
