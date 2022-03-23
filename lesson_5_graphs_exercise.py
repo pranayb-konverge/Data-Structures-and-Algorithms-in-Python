@@ -45,26 +45,36 @@ new_graph.display_graph()
 print("\n---------------Adjacency Matrix represent the nodes as 1-0 in the matrix--------------\n")
 
 class GraphMatrix:
-    def __init__(self, num_nodes, edges):
+    def __init__(self, num_nodes):
         self.num_nodes = num_nodes
         # create list of empty list 
         self.adj_matrix = [[0 for _ in range(num_nodes)] for _ in range(num_nodes)]
-        for node_a, node_b in edges:
-            if node_a == node_b:
-                print("Same Node %d and %d" % (node_a, node_b))
-            # insert in the correct adj_matrix
-            self.adj_matrix[node_a][node_b] = 1
-            self.adj_matrix[node_b][node_a] = 1
+        
+    def add_edge(self, node_a, node_b):
+        if node_a == node_b:
+            print("Same Node %d and %d" % (node_a, node_b))
+        # insert in the correct adj_matrix
+        self.adj_matrix[node_a][node_b] = 1
+        self.adj_matrix[node_b][node_a] = 1
+    
+    def remove_edge(self, node_a,node_b):
+        if self.adj_matrix[node_a][node_b] == 0:
+            print("No edge between %d and %d" % (node_a, node_b))
+            return
+        self.adj_matrix[node_a][node_b] = 0
+        self.adj_matrix[node_b][node_a] = 0
 
     # lets print the graph in a better way
-    def __repr__(self):
-         return '{}'.format(self.adj_matrix)                
+    def display_graph_matrix(self):
+         print('{}'.format(self.adj_matrix))               
 
-    def __str__(self):
-        return self.__repr__()
-
-new_graph_matrix = GraphMatrix(num_nodes, edges)
-print(new_graph_matrix)
+new_graph_matrix = GraphMatrix(num_nodes)
+for edge_a, edge_b in edges:
+    new_graph_matrix.add_edge(edge_a, edge_b)
+new_graph_matrix.display_graph_matrix()
+new_graph_matrix.remove_edge(1,4)
+print()
+new_graph_matrix.display_graph_matrix()
 
 print("\n---------------Graph traversal - breadth-first search--------------\n")
 """
