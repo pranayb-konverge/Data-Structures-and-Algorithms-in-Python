@@ -10,26 +10,39 @@ num_nodes = 5
 edges  = [(0,1), (0,4), (1,2), (1,3), (1,4), (2,3),(3,4)]
 
 class Graph:
-    def __init__(self, num_nodes, edges):
+    def __init__(self, num_nodes):
         self.num_nodes = num_nodes
         # create list of empty list 
         self.list_of_nodes = [[] for _ in range(num_nodes)]
-        for node_a, node_b in edges:
-            # insert in the correct list_of_nodes
-            self.list_of_nodes[node_a].append(node_b)
-            self.list_of_nodes[node_b].append(node_a)
+        
+    def add_edge(self, node_a, node_b):
+        self.list_of_nodes[node_a].append(node_b)
+        self.list_of_nodes[node_b].append(node_a)
+    
+    def remove_edge(self, edge):
+        for _, neighbour in enumerate(self.list_of_nodes):
+            if neighbour == list(edge):
+                self.list_of_nodes.remove(list(edge))
+        
     # lets print the graph in a better way
-    def __repr__(self):
-        return "\n".join(["Node {}: Edge connected with {}".format(node, neighbour) \
-            for node, neighbour in enumerate(self.list_of_nodes)])
+    def display_list(self):
+        print(
+            "\n".join(
+            ["Node {}: Edge connected with {}".format(
+                node, neighbour) 
+            for node, neighbour in enumerate(
+                self.list_of_nodes)])
+            )
 
-    def __str__(self):
-        return self.__repr__()
+new_graph = Graph(num_nodes)
+for edge_a, edge_b in edges:
+    new_graph.add_edge(edge_a, edge_b)
+new_graph.display_list()
+new_graph.remove_edge((1,4))
+print()
+new_graph.display_list()
 
-new_graph = Graph(num_nodes, edges)
-print(new_graph)
-
-print("\n---------------Graph Matrix represent the nodes as 1-0 in the matrix--------------\n")
+print("\n---------------Adjacency Matrix represent the nodes as 1-0 in the matrix--------------\n")
 
 class GraphMatrix:
     def __init__(self, num_nodes, edges):
@@ -221,9 +234,3 @@ print(new_graph)
 
 print("Get the shortest path of the nodes:")
 print(shortest_path(new_graph, 0 , 5))
-
-
-
-
-
-
