@@ -110,21 +110,31 @@ def breadth_first_search(graph, root):
         # get most recently inserted element in the queue, dequeue operation
         current = queue[idx]
         # as we got the current/discovered value in the queue increment the index
-        idx += 1
-
-    # check all the edges of the current node
-    for node in data[current]:
-        if not discovered[node]:
-            # current nodes distance is 1 + self
-            distance[node] = 1 + distance[current]
-            # Parent node will be current as it is not discuvered yet
-            parent[node] = current
-            # so we can set the note as discovered 
-            discovered[node] = True
-            queue.append(node)
+        idx += 1  
+        # check all the edges of the current node
+        # for example the root/current is 0 then data[current] will be [1,4] 
+        for node in data[current]:
+            # yet to discover, so here 0 is discovered but not 1 (node) from [1,4]
+            if not discovered[node]:
+                # current nodes distance is 1 + self
+                distance[node] = 1 + distance[current]
+                # Parent node will be current as it is not discovered yet
+                parent[node] = current
+                # so we can set the note as discovered 
+                discovered[node] = True
+                # and append the node in queue
+                queue.append(node)  
     return queue, distance, parent
 
-print(breadth_first_search(new_graph, 3))
+new_graph = Graph(num_nodes)
+for edge_a, edge_b in edges:
+    new_graph.add_edge(edge_a, edge_b)
+new_graph.display_graph()
+
+root = 3
+edges, distance, parent = breadth_first_search(new_graph, root)
+print(f"\nThe {root} has {edges} nodes associated, \
+distance (from other nodes) is {distance} and the parent is {parent}.")
 
 print("\n---------------Graph traversal - depth-first search--------------\n")
 """
