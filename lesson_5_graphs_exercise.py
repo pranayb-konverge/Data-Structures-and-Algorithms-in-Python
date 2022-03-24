@@ -149,6 +149,39 @@ print(f"\nThe {root} has {edges} nodes associated, \
 distance (order of nodes) is {distance} and \
 the parent (order of nodes) is {parent}. Is the graph connected? {connected}.")
 
+print("\n--Get the componentes which are connected in a graph--\n")
+
+def is_component_util(graph, node, discovered, connected_graph_edge):
+    # If the node/neighbour is not discovered mark it discovered 
+    discovered[node] = True
+    # append the node/neighbour in the list
+    connected_graph_edge.append(node)
+    # if node = 0 so in a graph like [[0,1],[1,2], [3]], the graph[node]=[0,1] 
+    # so value of neighbour will be 0 then 1 then 1 then 2 
+    for neighbour in graph[node]:   
+        # only discover if the neighbour is not discovered
+        if not discovered[neighbour]:            
+            is_component_util(graph, neighbour, discovered, connected_graph_edge)
+
+def bfs_component_connected(graph, num_nodes):
+    discovered = [False] * num_nodes
+    components = []
+
+    # iterate over the range of num_nudes
+    for node in range(num_nodes):
+        if not discovered[node]:
+            connected_graph_edge = []
+            is_component_util(graph, node, discovered, connected_graph_edge)
+            # here the list of connected nodes will be appended
+            components.append(connected_graph_edge)
+    
+    return components
+
+# end of bfs_component_connected
+result = bfs_component_connected(new_graph.list_of_nodes, num_nodes)
+print("List of connected components in graph:", result)
+
+
 print("\n---------------Graph traversal - depth-first search--------------\n")
 """
 Question: Define a class to represent weighted and directed graphs in Python.
