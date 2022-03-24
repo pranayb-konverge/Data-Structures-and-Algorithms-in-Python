@@ -176,8 +176,8 @@ def bfs_component_connected(graph, num_nodes):
             components.append(connected_graph_edge)
     
     return components
-
 # end of bfs_component_connected
+
 result = bfs_component_connected(new_graph.list_of_nodes, num_nodes)
 print("List of connected components in graph:", result)
 
@@ -199,11 +199,13 @@ class DepthGraph:
             if self.weighted:
                 # include weights
                 node_a, node_b, weight = edge
+                # pair the nodes_b with node_a
                 self.data[node_a].append(node_b)
+                # pair the weight with node_a
                 self.weight[node_a].append(weight)
                 if not directed:
                     self.data[node_b].append(node_a)
-                    self.data[node_b].append(weight)
+                    self.weight[node_b].append(weight)
             else:
                 # work without weights
                 node_a, node_b = edge
@@ -225,11 +227,12 @@ class DepthGraph:
         return self.__repr__()
 
 # Graph with weights
+# graph link https://i.imgur.com/wy7ZHRW.png
 num_nodes = 9
 edges = [(0, 1, 3), (0, 3, 2), (0, 8, 4), (1, 7, 4), (2, 7, 2), (2, 3, 6), 
           (2, 5, 1), (3, 4, 1), (4, 8, 8), (5, 6, 8)]
 
-print("Graph with weights:")
+print("Graph with weights:(node,weight)")
 new_graph = DepthGraph(num_nodes, edges, weighted=True)
 print(new_graph)
 
@@ -241,10 +244,38 @@ print("Graph with direction:")
 new_graph = DepthGraph(num_nodes, edges, directed=True)
 print(new_graph)
 
+print("\n---- search in the Depth graph-----\n")
+def depth_first_search(graph, source):
+    visited = [False] * len(graph.data)
+    # visited node
+    stack = [source]
+    result = []
+    
+    # While the stack list is not empty
+    while len(stack) > 0:
+        # get the current value from stack by poping the last element LIFO 
+        current = stack.pop()
+        # if not visited then visite the node and add in result
+        if not visited[current]:
+            result.append(current)
+            visited[current] = True
+            # now we need to get the value from grap to populate the stack, 
+            # think this as a push in LIFO
+            for v in graph.data[current]:
+                stack.append(v)
+                
+    return result
+# end of depth_first_search()
+
+source = 4
+result = depth_first_search(new_graph, source)
+print(f"\nWe can traverse from {source} to these nodes {result}.")
+
 print("\n---------------Graph traversal - shortest path--------------\n")
 def shortest_path(graph, source, target):
     visited = [False] * len(graph.data)
     parent = [None] * len(graph.data)
+    # this is the distance of the node we have not discovered yet so its infinity
     distance = [float('inf')] * len(graph.data)
     queue = []
 
@@ -252,7 +283,9 @@ def shortest_path(graph, source, target):
     queue.append(source)
     idx = 0
 
-    while idx < 0 and not visited[target]:
+    # Here the target is not visited so we can take the current node from 
+    # the queue as idx. lets mark the current node as visited (True).
+    while idx < len(queue) and not visited[target]:
         current = queue[idx]
         visited[current] = True
         idx += 1
@@ -270,13 +303,13 @@ def shortest_path(graph, source, target):
 
 def update_distances(graph, current, distance, parent=None):
     """Update the distances of the current node's neighbors"""
-    neighbors = graph.data[current]
-    weights = graph.weight[current]
+    neighbors = graph.data[current] # from (0, 1, 4), (0,1) are the neighbours
+    weights = graph.weight[current] # weight of the edge is 4
     for i, node in enumerate(neighbors):
         weight = weights[i]
-        # if the distance and weight of the current node is less than the next or adjuscent node
-        # add to that node
-        if distance[current] + weight < distance[node]:
+        # if the length = distance + weight of the current node is less than the next 
+        # or adjacent node, update the length to distance of node
+        if (distance[current] + weight) < distance[node]:
             distance[node] = distance[current] + weight
             if parent:
                 parent[node] = current
@@ -286,17 +319,31 @@ def pick_next_node(distance, visited):
     min_distance = float('inf')
     min_node = None
     for node in range(len(distance)):
+        # if visited is false and distance of node is less than infinity 
+        # return the min_node/next_node
         if not visited[node] and distance[node] < min_distance:
             min_node = node
+            # update the min_distance to the discovered node
             min_distance = distance[node]
     return min_node
 
 
 num_nodes = 6
+# node1, node2, weight of edge
+# graph link https://i.imgur.com/Zn5cUkO.png
 edges = [(0, 1, 4), (0, 2, 2), (1, 2, 5), (1, 3, 10), (2, 4, 3), (4, 3, 4), (3, 5, 11)]
 new_graph = DepthGraph(num_nodes, edges, weighted=True, directed=True)
 
-print(new_graph)
+print("Graph with weight & direction:")
+print("Data:",new_graph.data)
+print("Weight:",new_graph.weight)
+print("Direction:",new_graph.directed)
+print()
 
-print("Get the shortest path of the nodes:")
-print(shortest_path(new_graph, 0 , 5))
+source = 0
+target = 5
+shorted_path, visited_nodes = shortest_path(new_graph, source, target)
+print(f"The shortest path between {source} & {target} is {shorted_path}.")
+print("Path follwed was:(Node: Parent)")
+for i in range(source, target+1):
+    print(f"{i}:{visited_nodes[i]}")
