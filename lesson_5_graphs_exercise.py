@@ -33,6 +33,7 @@ class Graph:
             for node, neighbour in enumerate(
                 self.list_of_nodes)])
             )
+# end of Graph class
 
 new_graph = Graph(num_nodes)
 for edge_a, edge_b in edges:
@@ -66,7 +67,8 @@ class GraphMatrix:
 
     # lets print the graph in a better way
     def display_graph_matrix(self):
-         print('{}'.format(self.adj_matrix))               
+         print('{}'.format(self.adj_matrix)) 
+# end of GraphMatrix class              
 
 new_graph_matrix = GraphMatrix(num_nodes)
 for edge_a, edge_b in edges:
@@ -102,6 +104,7 @@ def breadth_first_search(graph, root):
     discovered[root]  = True
     distance[root]  = 0
     queue.append(root)
+    connected = True
     # to dequeue the list we will have an index which will track the first 
     # element in the queues list
     idx = 0
@@ -123,18 +126,28 @@ def breadth_first_search(graph, root):
                 # so we can set the note as discovered 
                 discovered[node] = True
                 # and append the node in queue
-                queue.append(node)  
-    return queue, distance, parent
+                queue.append(node)
+    
+    # check if the graph is connected or not
+    if len(queue) < len(data):
+        connected = False
 
+    return queue, distance, parent, connected
+# end of breadth_first_search()
+
+# uncomment to test the all nodes connected scenario 
+# num_nodes = 9
+# edges = [(0, 1), (0, 3), (1, 2), (2, 3), (4, 5), (4, 6), (5, 6), (7, 8)]
 new_graph = Graph(num_nodes)
 for edge_a, edge_b in edges:
     new_graph.add_edge(edge_a, edge_b)
 new_graph.display_graph()
 
 root = 3
-edges, distance, parent = breadth_first_search(new_graph, root)
+edges, distance, parent, connected = breadth_first_search(new_graph, root)
 print(f"\nThe {root} has {edges} nodes associated, \
-distance (from other nodes) is {distance} and the parent is {parent}.")
+distance (order of nodes) is {distance} and \
+the parent (order of nodes) is {parent}. Is the graph connected? {connected}.")
 
 print("\n---------------Graph traversal - depth-first search--------------\n")
 """
@@ -184,16 +197,16 @@ edges = [(0, 1, 3), (0, 3, 2), (0, 8, 4), (1, 7, 4), (2, 7, 2), (2, 3, 6),
           (2, 5, 1), (3, 4, 1), (4, 8, 8), (5, 6, 8)]
 
 print("Graph with weights:")
-# new_graph = DepthGraph(num_nodes, edges, weighted=True)
-# print(new_graph)
+new_graph = DepthGraph(num_nodes, edges, weighted=True)
+print(new_graph)
 
 # Graph with direction
 num_nodes = 5
 edges = [(0, 1), (1, 2), (2, 3), (2, 4), (4, 2), (3, 0)]
 
 print("Graph with direction:")
-# new_graph = DepthGraph(num_nodes, edges, directed=True)
-# print(new_graph)
+new_graph = DepthGraph(num_nodes, edges, directed=True)
+print(new_graph)
 
 print("\n---------------Graph traversal - shortest path--------------\n")
 def shortest_path(graph, source, target):
