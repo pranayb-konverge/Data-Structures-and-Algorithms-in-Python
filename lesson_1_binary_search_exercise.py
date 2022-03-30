@@ -162,6 +162,8 @@ i.e. element after element.
 # import the jovian lib for bulk testing all the cases
 from jovian.pythondsa import evaluate_test_cases
 
+# this iteration takes a longer route and to find the elemt near end of the list will take
+# lot of time
 def linear_search(cards, query):
     position =0
     for _ in cards:
@@ -171,11 +173,34 @@ def linear_search(cards, query):
     return -1
 # end of linear_search()
 
-result = linear_search(**tests[1]['input'])
+# result = linear_search(**tests[1]['input'])
+# print(result)
+
+# To get the last element in a list in few iteration we canuse binary search
+def binary_search(cards, query):
+    lo, hi = 0, len(cards)
+    if hi == 0:
+        return -1
+
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        mid_number = cards[mid]
+        # print(lo, hi, mid, mid_number)
+
+        if mid_number == query:
+            return mid
+        elif mid_number < query:
+            hi = mid - 1
+        else:
+            lo = mid + 1
+    return -1
+# end of binary_search
+
+result = binary_search(**tests[6]['input'])
 print(result)
 
 # This problem needs binary search to get the position fo the card in few iterations.
-# In a list like this [10,10,8,8,8,7,7,2,1] tfinding position of 8 with binaryy= search will 
+# In a list like this [10,10,8,8,8,7,7,2,1] finding position of 8 with binary search will 
 # give us the middle number which is not the expected output. So this case the test will fail
 # as we need the first occurance of 8.
 
