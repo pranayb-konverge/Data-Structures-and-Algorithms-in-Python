@@ -52,19 +52,17 @@ We will assume that our function will return -1 in case cards does not contain q
 # lets create a test cases to determin
 tests = []
 
-# query occurs near start 
-test = {
+# 0 query occurs in the middle
+tests.append({
     "input":{
         "cards": [13, 11, 10, 7, 4, 3, 1, 0], 
         "query": 7
     },
     "output": 3
 
-}
+})
 
-# query occurs in the middle
-tests.append(test)
-
+# 1 query occurs near end
 tests.append({
     'input': {
         'cards': [13, 11, 10, 7, 4, 3, 1, 0],
@@ -73,7 +71,7 @@ tests.append({
     'output': 6
 })
 
-# query is the first element
+# 2 query is the first element
 tests.append({
     'input': {
         'cards': [4, 2, 1, -1],
@@ -82,7 +80,7 @@ tests.append({
     'output': 0
 })
 
-# query is the last element
+# 3 query is the last element
 tests.append({
     'input': {
         'cards': [3, -1, -9, -127],
@@ -91,7 +89,7 @@ tests.append({
     'output': 3
 })
 
-# cards contains just one element, query
+# 4 cards contains just one element, query
 tests.append({
     'input': {
         'cards': [6],
@@ -100,7 +98,7 @@ tests.append({
     'output': 0 
 })
 
-# cards does not contain query 
+# 5 cards does not contain query 
 tests.append({
     'input': {
         'cards': [9, 7, 5, 2, -9],
@@ -109,7 +107,7 @@ tests.append({
     'output': -1
 })
 
-# cards is empty
+# 6 cards is empty
 tests.append({
     'input': {
         'cards': [],
@@ -118,7 +116,7 @@ tests.append({
     'output': -1
 })
 
-# numbers can repeat in cards
+# 7 numbers can repeat in cards
 tests.append({
     'input': {
         'cards': [8, 8, 6, 6, 6, 6, 6, 3, 2, 2, 2, 0, 0, 0],
@@ -127,7 +125,7 @@ tests.append({
     'output': 7
 })
 
-# query occurs multiple times
+# 8 query occurs multiple times
 tests.append({
     'input': {
         'cards': [8, 8, 6, 6, 6, 6, 6, 6, 3, 2, 2, 2, 0, 0, 0],
@@ -163,6 +161,18 @@ i.e. element after element.
 
 # import the jovian lib for bulk testing all the cases
 from jovian.pythondsa import evaluate_test_cases
+
+def linear_search(cards, query):
+    position =0
+    for _ in cards:
+        if cards[position] == query:
+            return position
+        position += 1
+    return -1
+# end of linear_search()
+
+result = linear_search(**tests[1]['input'])
+print(result)
 
 # This problem needs binary search to get the position fo the card in few iterations.
 # In a list like this [10,10,8,8,8,7,7,2,1] tfinding position of 8 with binaryy= search will 
@@ -285,9 +295,9 @@ def last_position(nums, query):
 def first_and_last_position(nums, query):
     return first_position(nums, query), last_position(nums, query)
 
-print(sorted(tests[8]['input']['cards']))
-print(tests[8]['input']['query'])
+# print(sorted(tests[8]['input']['cards']))
+# print(tests[8]['input']['query'])
 
 # [0, 0, 0, 2, 2, 2, 3, 6, 6, 6, 6, 6, 6, 8, 8]
-result = first_and_last_position(sorted(tests[8]['input']['cards']), tests[8]['input']['query'])
-print(result)
+# result = first_and_last_position(sorted(tests[8]['input']['cards']), tests[8]['input']['query'])
+# print(result)
